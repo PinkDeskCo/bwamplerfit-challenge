@@ -874,6 +874,24 @@ body {
             );
     }
 
+    .challenge-auth__mode-toggle {
+        display: block;
+
+        margin: 14px auto 0;
+        padding: 0;
+
+        background: transparent;
+        border: 0;
+
+        color: var(--challenge-primary);
+
+        font: inherit;
+        font-size: 0.9rem;
+
+        text-decoration: underline;
+
+        cursor: pointer;
+    }
     /* ==================================================
     ACCESS BUTTON
     ================================================== */
