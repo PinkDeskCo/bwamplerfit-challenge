@@ -1,4 +1,4 @@
-console.log('PERSISTING')
+console.log('SANITY CHECK')
 
 "use strict";
 
