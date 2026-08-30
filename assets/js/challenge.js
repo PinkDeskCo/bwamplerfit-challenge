@@ -25,7 +25,8 @@ const challengeAuthEmail = document.getElementById( "challenge-auth-email");
 const challengeAuthMessage = document.getElementById("challenge-auth-message");
 const challengeDashboard = document.getElementById("challenge-dashboard");
 const challengeAuthPassword = document.getElementById( "challenge-auth-password");
-const challengeCreateAccount = document.getElementById("challenge-create-account");
+const challengeAuthSubmit = document.getElementById("challenge-auth-submit");
+const challengeAuthModeToggle = document.getElementById("challenge-auth-mode-toggle");
 const certificateNameInput = document.getElementById("challenge-certificate-name-input");
 const certificateCreateButton = document.getElementById("challenge-certificate-create");
 const certificateNameMessage = document.getElementById("challenge-certificate-name-message");
@@ -43,6 +44,7 @@ let selectedDay = null;
 let currentParticipantId = null;
 let challengeCompletedAt = null;
 let challengeCertificateName = null;
+let authMode = "signin";
 
 /* ==================================================
    DATE HELPERS
@@ -1033,8 +1035,8 @@ async function signInParticipant(event) {
         "";
 }
 
-
-async function createParticipantAccount() {
+async function createParticipantAccount(event) {
+    event.preventDefault();
     const email =
         challengeAuthEmail.value
             .trim()
@@ -1082,7 +1084,38 @@ async function createParticipantAccount() {
             "Account created. Check your email to confirm your account, then return here to sign in.";
     }
 }
+function updateAuthMode() {
+    challengeAuthMessage.textContent = "";
 
+    if (authMode === "create") {
+        challengeAuthSubmit.textContent =
+            "Create Account";
+
+        challengeAuthModeToggle.textContent =
+            "Already have an account? Sign in";
+
+        challengeAuthPassword.autocomplete =
+            "new-password";
+    } else {
+        challengeAuthSubmit.textContent =
+            "Continue Challenge";
+
+        challengeAuthModeToggle.textContent =
+            "First time here? Create account";
+
+        challengeAuthPassword.autocomplete =
+            "current-password";
+    }
+}
+
+function toggleAuthMode() {
+    authMode =
+        authMode === "signin"
+            ? "create"
+            : "signin";
+
+    updateAuthMode();
+}
 
 
 /* ==================================================
@@ -1098,14 +1131,19 @@ if (certificateCreateButton) {
 
 challengeAuthForm.addEventListener(
     "submit",
-    signInParticipant
+    (event) => {
+        if (authMode === "create") {
+            createParticipantAccount(event);
+        } else {
+            signInParticipant(event);
+        }
+    }
 );
 
-challengeCreateAccount.addEventListener(
+challengeAuthModeToggle.addEventListener(
     "click",
-    createParticipantAccount
+    toggleAuthMode
 );
-
 /* ==================================================
    INITIALIZE
 ================================================== */
