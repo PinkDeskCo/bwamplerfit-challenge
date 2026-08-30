@@ -1456,12 +1456,3 @@ body {
     .challenge-dashboard[hidden] {
         display: none !important;
 }
-
-.challenge-auth__challenge-image {
-    width: 100px !important;
-    height: 100px !important;
-
-    border: 5px solid red !important;
-
-    object-fit: contain !important;
-}
