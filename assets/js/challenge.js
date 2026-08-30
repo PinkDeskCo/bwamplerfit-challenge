@@ -1,4 +1,4 @@
-console.log('toggle')
+console.log('toggle sanity')
 
 "use strict";
 
@@ -1091,14 +1091,17 @@ function updateAuthMode() {
         challengeAuthSubmit.textContent =
             "Create Account";
 
-        challengeAuthModeToggle.textContent =
-            "Already have an account? Sign in";
+        challengeAuthModeToggle.hidden =
+            true;
 
         challengeAuthPassword.autocomplete =
             "new-password";
     } else {
         challengeAuthSubmit.textContent =
             "Continue Challenge";
+
+        challengeAuthModeToggle.hidden =
+            false;
 
         challengeAuthModeToggle.textContent =
             "First time here? Create account";
