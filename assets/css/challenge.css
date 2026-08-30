@@ -1267,7 +1267,47 @@ body {
 
         margin: 0;
     }
+    .challenge-auth__challenge {
+        display: grid;
+        justify-items: center;
 
+        margin-bottom: 30px;
+
+        text-align: center;
+    }
+
+    .challenge-auth__challenge-image {
+        display: block;
+
+        width: 150px;
+        height: 150px;
+
+        object-fit: contain;
+
+        margin-bottom: 10px;
+    }
+
+    .challenge-auth__challenge-name {
+        margin: 0;
+
+        color: var(--challenge-primary);
+
+        font-family: Georgia, serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+
+    .challenge-auth__challenge-dates {
+        margin: 5px 0 0;
+
+        color: var(--challenge-accent);
+
+        font-size: 0.78rem;
+        font-weight: 700;
+
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
 
 /* ==================================================
    RESPONSIVE
