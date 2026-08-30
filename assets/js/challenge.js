@@ -12,6 +12,7 @@ const challengeEyebrow = document.getElementById("challenge-eyebrow");
 const challengeSubtitle = document.getElementById("challenge-subtitle");
 const challengeStatus = document.getElementById("challenge-status");
 const challengeCount = document.getElementById("challenge-count");
+const challengeCompletion = document.getElementById("challenge-completion");
 const challengeHeatmap = document.getElementById("challenge-heatmap");
 const challengeLogo = document.getElementById("challenge-logo");
 const challengeHeroMedia = document.getElementById("challenge-hero-media");
@@ -25,6 +26,14 @@ const challengeAuthMessage = document.getElementById("challenge-auth-message");
 const challengeDashboard = document.getElementById("challenge-dashboard");
 const challengeAuthPassword = document.getElementById( "challenge-auth-password");
 const challengeCreateAccount = document.getElementById("challenge-create-account");
+const certificateNameInput = document.getElementById("challenge-certificate-name-input");
+const certificateCreateButton = document.getElementById("challenge-certificate-create");
+const certificateNameMessage = document.getElementById("challenge-certificate-name-message");
+const certificateNameSection = document.getElementById( "challenge-certificate-name");
+const certificateReadySection = document.getElementById("challenge-certificate-ready");
+const certificateDisplayName = document.getElementById("challenge-certificate-display-name");
+const certificatePreviewName = document.getElementById("challenge-certificate-preview-name");
+const certificatePreviewDate = document.getElementById("challenge-certificate-preview-date");
 /* ==================================================
    PARTICIPANT PROGRESS
 ================================================== */
@@ -32,6 +41,8 @@ const challengeCreateAccount = document.getElementById("challenge-create-account
 const challengeProgress = {};
 let selectedDay = null;
 let currentParticipantId = null;
+let challengeCompletedAt = null;
+let challengeCertificateName = null;
 
 /* ==================================================
    DATE HELPERS
@@ -88,6 +99,32 @@ function getTasksForDay(dayNumber) {
    CURRENT CHALLENGE DAY
 ================================================== */
 
+// function getCurrentChallengeDay() {
+//     const startDate =
+//         new Date(
+//             `${challengeConfig.startDate}T00:00:00`
+//         );
+
+//     const today =
+//         new Date();
+
+//     startDate.setHours(0, 0, 0, 0);
+//     today.setHours(0, 0, 0, 0);
+
+//     const difference =
+//         today - startDate;
+
+//     const dayNumber =
+//         Math.floor(
+//             difference / 86400000
+//         ) + 1;
+
+//     return Math.min(
+//         Math.max(dayNumber, 1),
+//         challengeConfig.totalDays
+//     );
+// }
+
 function getCurrentChallengeDay() {
     const startDate =
         new Date(
@@ -103,17 +140,24 @@ function getCurrentChallengeDay() {
     const difference =
         today - startDate;
 
+    if (difference < 0) {
+        return 0;
+    }
+
     const dayNumber =
         Math.floor(
             difference / 86400000
         ) + 1;
 
     return Math.min(
-        Math.max(dayNumber, 1),
+        dayNumber,
         challengeConfig.totalDays
     );
 }
 
+// function getCurrentChallengeDay() {
+//     return challengeConfig.totalDays;
+// }
 /* ==================================================
    BRANDING
 ================================================== */
@@ -377,8 +421,13 @@ function renderChallengeDays() {
     }
 
 
-    challengeStatus.textContent =
-        `Day ${currentDay} of ${challengeConfig.totalDays}`;
+    if (currentDay === 0) {
+        challengeStatus.textContent =
+            "Challenge begins September 1";
+    } else {
+        challengeStatus.textContent =
+            `Day ${currentDay} of ${challengeConfig.totalDays}`;
+    }
 }
 
 /* ==================================================
@@ -591,6 +640,46 @@ function updateChallengeProgress() {
     );
 }
 
+function updateCompletionState() {
+    if (!challengeCompletion) {
+        return;
+    }
+
+    challengeCompletion.hidden =
+        !challengeCompletedAt;
+
+    if (!challengeCompletedAt) {
+        return;
+    }
+
+    if (challengeCertificateName) {
+        certificateNameSection.hidden = true;
+        certificateReadySection.hidden = false;
+
+        certificateDisplayName.textContent =
+            challengeCertificateName;
+
+        certificatePreviewName.textContent =
+            challengeCertificateName;
+
+        const completedDate =
+            new Date(challengeCompletedAt);
+
+        certificatePreviewDate.textContent =
+            `Completed ${completedDate.toLocaleDateString(
+                "en-US",
+                {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric"
+                }
+            )}`;
+    } else {
+        certificateNameSection.hidden = false;
+        certificateReadySection.hidden = true;
+    }
+}
+
 /* ==================================================
    SUPABASE PROGRESS
 ================================================== */
@@ -655,7 +744,7 @@ async function loadChallengeProgress() {
         await supabaseClient
             .from("challenge_progress")
             .select(
-                "progress, started_at, completed_at"
+                "progress, started_at, completed_at, certificate_name"
             )
             .eq(
                 "participant_id",
@@ -716,6 +805,12 @@ async function loadChallengeProgress() {
         return;
     }
 
+    challengeCompletedAt =
+    savedProgress.completed_at || null;
+
+    challengeCertificateName =
+    savedProgress.certificate_name || null;
+
     if (
         savedProgress.progress &&
         typeof savedProgress.progress ===
@@ -739,9 +834,58 @@ async function loadChallengeProgress() {
     }
 }
 
+function isChallengeComplete() {
+    for (
+        let day = 1;
+        day <= challengeConfig.totalDays;
+        day++
+    ) {
+        const tasks =
+            getTasksForDay(day);
+
+        for (const task of tasks) {
+            if (
+                !challengeProgress[
+                    day
+                ].tasks[task.id]
+            ) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 async function saveChallengeProgress() {
     if (!currentParticipantId) {
         return;
+    }
+
+    const updates = {
+        progress:
+            challengeProgress,
+
+        updated_at:
+            new Date()
+                .toISOString()
+    };
+
+    /*
+     * Permanently record completion
+     * the first time the challenge
+     * reaches 100%.
+     */
+    if (
+        !challengeCompletedAt &&
+        isChallengeComplete()
+    ) {
+        challengeCompletedAt =
+            new Date()
+                .toISOString();
+
+        updates.completed_at =
+            challengeCompletedAt;
     }
 
     const {
@@ -749,14 +893,7 @@ async function saveChallengeProgress() {
     } =
         await supabaseClient
             .from("challenge_progress")
-            .update({
-                progress:
-                    challengeProgress,
-
-                updated_at:
-                    new Date()
-                        .toISOString()
-            })
+            .update(updates)
             .eq(
                 "participant_id",
                 currentParticipantId
@@ -774,6 +911,75 @@ async function saveChallengeProgress() {
     }
 }
 
+async function saveCertificateName() {
+    if (
+        !currentParticipantId ||
+        !challengeCompletedAt
+    ) {
+        return;
+    }
+
+    const certificateName =
+        certificateNameInput.value.trim();
+
+    if (!certificateName) {
+        certificateNameMessage.textContent =
+            "Please enter the name you want on your certificate.";
+
+        return;
+    }
+
+    certificateCreateButton.disabled = true;
+
+    certificateNameMessage.textContent =
+        "Creating your certificate...";
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("challenge_progress")
+            .update({
+                certificate_name:
+                    certificateName,
+
+                updated_at:
+                    new Date()
+                        .toISOString()
+            })
+            .eq(
+                "participant_id",
+                currentParticipantId
+            )
+            .eq(
+                "challenge_key",
+                "30-day-challenge"
+            );
+
+    if (error) {
+        console.error(
+            "Unable to save certificate name:",
+            error
+        );
+
+        certificateNameMessage.textContent =
+            "We couldn't save your certificate name. Please try again.";
+
+        certificateCreateButton.disabled = false;
+
+        return;
+    }
+
+    challengeCertificateName =
+        certificateName;
+
+    certificateNameMessage.textContent =
+        "Certificate name saved.";
+
+    updateCompletionState();
+
+    certificateCreateButton.disabled = false;
+}
 /* ==================================================
    AUTHENTICATION
 ================================================== */
@@ -872,6 +1078,18 @@ async function createParticipantAccount() {
 }
 
 
+
+/* ==================================================
+   EVENT LISTENERS
+================================================== */
+
+if (certificateCreateButton) {
+    certificateCreateButton.addEventListener(
+        "click",
+        saveCertificateName
+    );
+}
+
 challengeAuthForm.addEventListener(
     "submit",
     signInParticipant
@@ -892,6 +1110,7 @@ async function initializeChallenge() {
     initializeProgressState();
 
     await loadChallengeProgress();
+    updateCompletionState();
 
     renderChallengeImages();
 
