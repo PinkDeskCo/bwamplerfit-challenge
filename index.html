@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BWamplerFit Challenge</title>
+
+    <link rel="stylesheet"
+        href="./assets/css/challenge.css"
+    >
+</head>
+
+<body>
+
+    <main class="challenge-page">
+
+        <section class="challenge-auth"
+            id="challenge-auth"
+        >
+            <div class="challenge-auth__card">
+
+                <p class="challenge-auth__eyebrow">
+                    Save Your Progress
+                </p>
+
+                <h1 class="challenge-auth__title">
+                    Pick up where you left off.
+                </h1>
+
+                <p class="challenge-auth__text">
+                    Enter your email and we’ll send you a secure sign-in link.
+                    Once you’re signed in, your challenge progress will save
+                    automatically and follow you across devices.
+                </p>
+
+                <form
+                    class="challenge-auth__form"
+                    id="challenge-auth-form"
+                >
+                    <label
+                        class="challenge-auth__label"
+                        for="challenge-auth-email"
+                    >
+                        Email address
+                    </label>
+
+                    <input
+                        class="challenge-auth__input"
+                        id="challenge-auth-email"
+                        type="email"
+                        autocomplete="email"
+                        required
+                    >
+
+                    <label
+                        class="challenge-auth__label"
+                        for="challenge-auth-password"
+                    >
+                        Password
+                    </label>
+
+                    <input
+                        class="challenge-auth__input"
+                        id="challenge-auth-password"
+                        type="password"
+                        autocomplete="current-password"
+                        minlength="6"
+                        required
+                    >
+
+                    <button
+                        class="challenge-auth__button"
+                        type="submit"
+                    >
+                        Continue Challenge
+                    </button>
+
+                    <button
+                        class="challenge-auth__secondary-button"
+                        type="button"
+                        id="challenge-create-account"
+                    >
+                        First time here? Create account
+                    </button>
+                </form>
+
+                <p
+                    class="challenge-auth__message"
+                    id="challenge-auth-message"
+                    aria-live="polite"
+                ></p>
+
+            </div>
+        </section>
+
+        <div  class="challenge-dashboard"
+            id="challenge-dashboard"
+            hidden
+        >
+            <section class="challenge-hero"
+                id="challenge-dashboard"
+                hidden
+            >
+
+                <div class="challenge-hero__media"
+                    id="challenge-hero-media"
+                    hidden
+                >
+                    <img
+                        class="challenge-hero__image"
+                        id="challenge-hero-image"
+                        src=""
+                        alt=""
+                    >
+                </div>
+
+                <div class="challenge-hero__content">
+
+                    <img
+                        class="challenge-hero__logo"
+                        id="challenge-logo"
+                        src=""
+                        alt=""
+                        hidden
+                    >
+
+                    <p class="challenge-hero__eyebrow"
+                        id="challenge-eyebrow"
+                    >
+                        30-Day Challenge
+                    </p>
+
+                    <h1 class="challenge-hero__title"
+                        id="challenge-title"
+                    >
+                        Challenge Title
+                    </h1>
+
+                    <p class="challenge-hero__subtitle"
+                        id="challenge-subtitle"
+                    >
+                        Challenge subtitle goes here.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <section class="challenge-progress">
+
+                <header class="challenge-progress__header">
+
+                <div class="challenge-progress__summary">
+
+                        <div class="challenge-progress-circle"
+                            id="challenge-progress-circle"
+                            role="progressbar"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="0"
+                        >
+                            <div class="challenge-progress-circle__inner">
+
+                                <span
+                                    class="challenge-progress-circle__value"
+                                    id="challenge-progress-percent"
+                                >
+                                    0%
+                                </span>
+
+                                <span class="challenge-progress-circle__label">
+                                    complete
+                                </span>
+
+                            </div>
+                        </div>
+
+
+                        <div class="challenge-progress__info">
+
+                            <p class="challenge-progress__label">
+                                Your Progress
+                            </p>
+
+                            <h2 class="challenge-progress__status"
+                                id="challenge-status"
+                            >
+                                Day 1
+                            </h2>
+
+                            <p class="challenge-progress__count"
+                                id="challenge-count"
+                            >
+                                0 activities completed
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </header>
+
+
+                <div class="challenge-heatmap"
+                    id="challenge-heatmap"
+                    aria-label="30-day challenge progress"
+                >
+                </div>
+
+                <div class="challenge-day-detail"
+                    id="challenge-day-detail"
+                >
+                    <p class="challenge-day-detail__placeholder">
+                        Select a day to view your activities.
+                    </p>
+                </div>
+
+            </section>
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="./assets/js/supabase-config.js"></script>
+    <script src="./assets/js/challenge-config.js"></script>
+    <script src="./assets/js/challenge.js"></script>
+
+</body>
+</html>

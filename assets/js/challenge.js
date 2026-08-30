@@ -1,0 +1,954 @@
+"use strict";
+
+
+/* ==================================================
+   DOM
+================================================== */
+
+const challengeTitle = document.getElementById("challenge-title");
+const challengeEyebrow = document.getElementById("challenge-eyebrow");
+const challengeSubtitle = document.getElementById("challenge-subtitle");
+const challengeStatus = document.getElementById("challenge-status");
+const challengeCount = document.getElementById("challenge-count");
+const challengeHeatmap = document.getElementById("challenge-heatmap");
+const challengeLogo = document.getElementById("challenge-logo");
+const challengeHeroMedia = document.getElementById("challenge-hero-media");
+const challengeHeroImage = document.getElementById("challenge-hero-image");
+const challengeProgressCircle =  document.getElementById( "challenge-progress-circle");
+const challengeProgressPercent = document.getElementById("challenge-progress-percent");
+const challengeAuth = document.getElementById( "challenge-auth");
+const challengeAuthForm = document.getElementById("challenge-auth-form");
+const challengeAuthEmail = document.getElementById( "challenge-auth-email");
+const challengeAuthMessage = document.getElementById("challenge-auth-message");
+const challengeDashboard = document.getElementById("challenge-dashboard");
+const challengeAuthPassword = document.getElementById( "challenge-auth-password");
+const challengeCreateAccount = document.getElementById("challenge-create-account");
+/* ==================================================
+   PARTICIPANT PROGRESS
+================================================== */
+
+const challengeProgress = {};
+let selectedDay = null;
+let currentParticipantId = null;
+
+/* ==================================================
+   DATE HELPERS
+================================================== */
+
+const weekdayNames = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday"
+];
+
+function getChallengeDate(dayNumber) {
+    const startDate =
+        new Date(
+            `${challengeConfig.startDate}T00:00:00`
+        );
+
+    const challengeDate =
+        new Date(startDate);
+
+    challengeDate.setDate(
+        startDate.getDate() +
+        dayNumber -
+        1
+    );
+
+    return challengeDate;
+}
+
+function getWeekdayForDay(dayNumber) {
+    const challengeDate =
+        getChallengeDate(dayNumber);
+
+    return weekdayNames[
+        challengeDate.getDay()
+    ];
+}
+
+function getTasksForDay(dayNumber) {
+    const weekday =
+        getWeekdayForDay(dayNumber);
+
+    return (
+        challengeConfig.schedule[weekday] ||
+        []
+    );
+}
+
+/* ==================================================
+   CURRENT CHALLENGE DAY
+================================================== */
+
+function getCurrentChallengeDay() {
+    const startDate =
+        new Date(
+            `${challengeConfig.startDate}T00:00:00`
+        );
+
+    const today =
+        new Date();
+
+    startDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    const difference =
+        today - startDate;
+
+    const dayNumber =
+        Math.floor(
+            difference / 86400000
+        ) + 1;
+
+    return Math.min(
+        Math.max(dayNumber, 1),
+        challengeConfig.totalDays
+    );
+}
+
+/* ==================================================
+   BRANDING
+================================================== */
+function applyChallengeBranding() {
+    const root =
+        document.documentElement;
+
+    root.style.setProperty(
+        "--challenge-primary",
+        challengeConfig.branding.primaryColor
+    );
+
+    root.style.setProperty(
+        "--challenge-accent",
+        challengeConfig.branding.accentColor
+    );
+
+    root.style.setProperty(
+        "--challenge-background",
+        challengeConfig.branding.backgroundColor
+    );
+
+    root.style.setProperty(
+        "--challenge-surface",
+        challengeConfig.branding.surfaceColor
+    );
+
+    root.style.setProperty(
+        "--challenge-muted",
+        challengeConfig.branding.mutedColor
+    );
+}
+
+/* ==================================================
+   HERO
+================================================== */
+
+function renderChallengeImages() {
+    const logo =
+        challengeConfig.branding.logo;
+
+    const heroImage =
+        challengeConfig.branding.heroImage;
+
+    if (logo) {
+        challengeLogo.src = logo;
+
+        challengeLogo.alt =
+            `${challengeConfig.title} logo`;
+
+        challengeLogo.hidden = false;
+    } else {
+        challengeLogo.hidden = true;
+    }
+
+    if (heroImage) {
+        challengeHeroImage.src =
+            heroImage;
+
+        challengeHeroImage.alt =
+            `${challengeConfig.title} challenge`;
+
+        challengeHeroMedia.hidden =
+            false;
+    } else {
+        challengeHeroMedia.hidden =
+            true;
+    }
+}
+
+function renderChallengeHeader() {
+    challengeEyebrow.textContent =
+        challengeConfig.eyebrow;
+
+    challengeTitle.textContent =
+        challengeConfig.title;
+
+    challengeSubtitle.textContent =
+        challengeConfig.subtitle;
+}
+
+/* ==================================================
+   PROGRESS STATE
+================================================== */
+
+function initializeProgressState() {
+    for (
+        let day = 1;
+        day <= challengeConfig.totalDays;
+        day++
+    ) {
+        const tasks =
+            getTasksForDay(day);
+
+        challengeProgress[day] = {
+            tasks: {}
+        };
+
+        tasks.forEach((task) => {
+            challengeProgress[day].tasks[
+                task.id
+            ] = false;
+        });
+    }
+}
+
+/* ==================================================
+   DAY COMPLETION
+================================================== */
+
+function getDayCompletion(dayNumber) {
+    const tasks =
+        getTasksForDay(dayNumber);
+
+    /*
+     * Sunday / rest day
+     */
+    if (tasks.length === 0) {
+        return 1;
+    }
+
+    const dayProgress =
+        challengeProgress[dayNumber];
+
+    const completedTasks =
+        tasks.filter(
+            (task) =>
+                dayProgress.tasks[task.id]
+        ).length;
+
+    return (
+        completedTasks /
+        tasks.length
+    );
+}
+
+/* ==================================================
+   HEAT MAP
+================================================== */
+
+function renderChallengeDays() {
+    challengeHeatmap.innerHTML = "";
+
+    const currentDay =
+        getCurrentChallengeDay();
+
+    for (
+        let day = 1;
+        day <= challengeConfig.totalDays;
+        day++
+    ) {
+        const dayButton =
+            document.createElement("button");
+
+        const weekday =
+            getWeekdayForDay(day);
+
+        const tasks =
+            getTasksForDay(day);
+
+        const completion =
+            getDayCompletion(day);
+
+        dayButton.type = "button";
+
+        dayButton.className =
+            "challenge-day";
+
+        dayButton.dataset.day = day;
+
+        dayButton.innerHTML = `
+            <span class="challenge-day__number">
+                ${day}
+            </span>
+        `;
+
+        if (day === selectedDay) {
+            dayButton.classList.add(
+                "is-selected"
+            );
+        }
+
+        /*
+         * Future day
+         */
+        if (day > currentDay) {
+            dayButton.classList.add(
+                "is-locked"
+            );
+
+            dayButton.disabled = true;
+        }
+
+
+        /*
+         * Current day
+         */
+        if (day === currentDay) {
+            dayButton.classList.add(
+                "is-current"
+            );
+        }
+
+
+        /*
+         * Rest day
+         */
+        if (
+            weekday === "sunday" ||
+            tasks.length === 0
+        ) {
+            dayButton.classList.add(
+                "is-rest-day",
+                "is-completed"
+            );
+        }
+
+
+        /*
+         * Partial completion
+         */
+        if (
+            completion > 0 &&
+            completion < 1
+        ) {
+            dayButton.classList.add(
+                "is-partial"
+            );
+        }
+
+
+        /*
+         * Full completion
+         */
+        if (
+            completion === 1 &&
+            tasks.length > 0
+        ) {
+            dayButton.classList.add(
+                "is-completed"
+            );
+        }
+
+
+        if (!dayButton.disabled) {
+            dayButton.addEventListener(
+                "click",
+                () => {
+                    selectedDay = day;
+
+                    renderChallengeDays();
+                    renderDayChecklist(day);
+                }
+            );
+        }
+
+
+        challengeHeatmap.appendChild(
+            dayButton
+        );
+    }
+
+
+    challengeStatus.textContent =
+        `Day ${currentDay} of ${challengeConfig.totalDays}`;
+}
+
+/* ==================================================
+   TASK CHECKLIST
+================================================== */
+
+function renderDayChecklist(dayNumber) {
+    const checklist =
+        document.getElementById(
+            "challenge-day-detail"
+        );
+
+    const weekday =
+        getWeekdayForDay(dayNumber);
+
+    const tasks =
+        getTasksForDay(dayNumber);
+
+    const challengeDate =
+        getChallengeDate(dayNumber);
+
+    const dayLabel =
+        weekday.charAt(0).toUpperCase() +
+        weekday.slice(1);
+
+    const dateLabel =
+        challengeDate.toLocaleDateString(
+            "en-US",
+            {
+                month: "short",
+                day: "numeric"
+            }
+        );
+
+
+    /*
+     * Rest day
+     */
+    if (tasks.length === 0) {
+        checklist.innerHTML = `
+            <div class="challenge-day-detail__header">
+                <p class="challenge-day-detail__day">
+                    Day ${dayNumber}
+                </p>
+
+                <h3>
+                    ${dayLabel} · ${dateLabel}
+                </h3>
+            </div>
+
+            <p class="challenge-day-detail__rest">
+                Rest Day ✓
+            </p>
+        `;
+
+        return;
+    }
+
+
+    const taskMarkup =
+        tasks.map((task) => {
+            const checked =
+                challengeProgress[
+                    dayNumber
+                ].tasks[task.id];
+
+            return `
+                <label class="challenge-task">
+
+                    <input
+                        type="checkbox"
+                        data-day="${dayNumber}"
+                        data-task="${task.id}"
+                        ${checked ? "checked" : ""}
+                    >
+
+                    <span>
+                        ${task.label}
+                    </span>
+
+                </label>
+            `;
+        }).join("");
+
+
+    checklist.innerHTML = `
+        <div class="challenge-day-detail__header">
+
+            <p class="challenge-day-detail__day">
+                Day ${dayNumber}
+            </p>
+
+            <h3>
+                ${dayLabel} · ${dateLabel}
+            </h3>
+
+        </div>
+
+        <div class="challenge-task-list">
+            ${taskMarkup}
+        </div>
+    `;
+
+
+    const checkboxes =
+        checklist.querySelectorAll(
+            'input[type="checkbox"]'
+        );
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener(
+            "change",
+            handleTaskChange
+        );
+    });
+}
+
+/* ==================================================
+   TASK CHANGE
+================================================== */
+
+function handleTaskChange(event) {
+    const checkbox =
+        event.currentTarget;
+
+    const day =
+        Number(checkbox.dataset.day);
+
+    const taskId =
+        checkbox.dataset.task;
+
+    challengeProgress[day].tasks[
+        taskId
+    ] = checkbox.checked;
+
+    saveChallengeProgress();
+
+    renderChallengeDays();
+    updateChallengeProgress();
+
+
+    if (selectedDay !== null) {
+        renderDayChecklist(
+            selectedDay
+        );
+    }
+}
+
+/* ==================================================
+   TOTAL PROGRESS
+================================================== */
+
+function updateChallengeProgress() {
+    let totalTasks = 0;
+    let completedTasks = 0;
+
+    for (
+        let day = 1;
+        day <= challengeConfig.totalDays;
+        day++
+    ) {
+        const tasks =
+            getTasksForDay(day);
+
+        if (tasks.length === 0) {
+            continue;
+        }
+
+        tasks.forEach((task) => {
+            totalTasks++;
+
+            if (
+                challengeProgress[
+                    day
+                ].tasks[task.id]
+            ) {
+                completedTasks++;
+            }
+        });
+    }
+
+    const percentage =
+        totalTasks > 0
+            ? Math.round(
+                (
+                    completedTasks /
+                    totalTasks
+                ) * 100
+            )
+            : 0;
+
+
+    challengeCount.textContent =
+        `${completedTasks} / ${totalTasks} activities completed`;
+
+
+    challengeProgressPercent.textContent =
+        `${percentage}%`;
+
+
+    challengeProgressCircle.style.setProperty(
+        "--progress",
+        `${percentage * 3.6}deg`
+    );
+
+
+    challengeProgressCircle.setAttribute(
+        "aria-valuenow",
+        percentage
+    );
+}
+
+/* ==================================================
+   SUPABASE PROGRESS
+================================================== */
+
+async function getCurrentParticipant() {
+    const {
+        data: userData,
+        error: userError
+    } =
+        await supabaseClient.auth.getUser();
+
+    if (userError || !userData.user) {
+        console.error(
+            "Unable to get authenticated user:",
+            userError
+        );
+
+        return null;
+    }
+
+    const {
+        data: participant,
+        error: participantError
+    } =
+        await supabaseClient
+            .from("challenge_participants")
+            .select("id")
+            .eq(
+                "user_id",
+                userData.user.id
+            )
+            .single();
+
+    if (participantError) {
+        console.error(
+            "Unable to load participant:",
+            participantError
+        );
+
+        return null;
+    }
+
+    currentParticipantId =
+        participant.id;
+
+    return participant;
+}
+
+
+async function loadChallengeProgress() {
+    const participant =
+        await getCurrentParticipant();
+
+    if (!participant) {
+        return;
+    }
+
+    const {
+        data: savedProgress,
+        error
+    } =
+        await supabaseClient
+            .from("challenge_progress")
+            .select(
+                "progress, started_at, completed_at"
+            )
+            .eq(
+                "participant_id",
+                participant.id
+            )
+            .eq(
+                "challenge_key",
+                "30-day-challenge"
+            )
+            .maybeSingle();
+
+    if (error) {
+        console.error(
+            "Unable to load challenge progress:",
+            error
+        );
+
+        return;
+    }
+
+    if (!savedProgress) {
+      const {
+            error: insertError
+        } =
+            await supabaseClient
+                .from("challenge_progress")
+                .upsert(
+                    {
+                        participant_id:
+                            participant.id,
+
+                        challenge_key:
+                            "30-day-challenge",
+
+                        progress:
+                            challengeProgress,
+
+                        started_at:
+                            new Date()
+                                .toISOString()
+                    },
+                    {
+                        onConflict:
+                            "participant_id,challenge_key",
+
+                        ignoreDuplicates:
+                            true
+                    }
+                );
+
+        if (insertError) {
+            console.error(
+                "Unable to create challenge progress:",
+                insertError
+            );
+        }
+
+        return;
+    }
+
+    if (
+        savedProgress.progress &&
+        typeof savedProgress.progress ===
+            "object"
+    ) {
+        Object.keys(
+            savedProgress.progress
+        ).forEach((day) => {
+            if (
+                challengeProgress[day] &&
+                savedProgress.progress[day]
+            ) {
+                Object.assign(
+                    challengeProgress[day].tasks,
+                    savedProgress
+                        .progress[day]
+                        .tasks || {}
+                );
+            }
+        });
+    }
+}
+
+async function saveChallengeProgress() {
+    if (!currentParticipantId) {
+        return;
+    }
+
+    const {
+        error
+    } =
+        await supabaseClient
+            .from("challenge_progress")
+            .update({
+                progress:
+                    challengeProgress,
+
+                updated_at:
+                    new Date()
+                        .toISOString()
+            })
+            .eq(
+                "participant_id",
+                currentParticipantId
+            )
+            .eq(
+                "challenge_key",
+                "30-day-challenge"
+            );
+
+    if (error) {
+        console.error(
+            "Unable to save challenge progress:",
+            error
+        );
+    }
+}
+
+/* ==================================================
+   AUTHENTICATION
+================================================== */
+
+function showAuthentication() {
+    challengeAuth.hidden = false;
+    challengeDashboard.hidden = true;
+}
+
+function showDashboard() {
+    challengeAuth.hidden = true;
+    challengeDashboard.hidden = false;
+}
+
+async function signInParticipant(event) {
+    event.preventDefault();
+
+    const email =
+        challengeAuthEmail.value
+            .trim()
+            .toLowerCase();
+
+    const password =
+        challengeAuthPassword.value;
+
+    challengeAuthMessage.textContent =
+        "Signing you in...";
+
+    const {
+        error
+    } =
+        await supabaseClient.auth
+            .signInWithPassword({
+                email,
+                password
+            });
+
+    if (error) {
+        console.error(
+            "Sign-in error:",
+            error
+        );
+
+        challengeAuthMessage.textContent =
+            "Email or password is incorrect.";
+
+        return;
+    }
+
+    challengeAuthMessage.textContent =
+        "";
+}
+
+
+async function createParticipantAccount() {
+    const email =
+        challengeAuthEmail.value
+            .trim()
+            .toLowerCase();
+
+    const password =
+        challengeAuthPassword.value;
+
+    if (!email || !password) {
+        challengeAuthMessage.textContent =
+            "Enter an email address and password first.";
+
+        return;
+    }
+
+    challengeAuthMessage.textContent =
+        "Creating your account...";
+
+    const {
+        error
+    } =
+        await supabaseClient.auth.signUp({
+            email,
+            password
+        });
+
+    if (error) {
+        console.error(
+            "Account creation error:",
+            error
+        );
+
+        challengeAuthMessage.textContent =
+            error.message;
+
+        return;
+    }
+
+    challengeAuthMessage.textContent =
+        "";
+}
+
+
+challengeAuthForm.addEventListener(
+    "submit",
+    signInParticipant
+);
+
+challengeCreateAccount.addEventListener(
+    "click",
+    createParticipantAccount
+);
+
+/* ==================================================
+   INITIALIZE
+================================================== */
+
+async function initializeChallenge() {
+    applyChallengeBranding();
+
+    initializeProgressState();
+
+    await loadChallengeProgress();
+
+    renderChallengeImages();
+
+    renderChallengeHeader();
+
+    const currentDay =
+        getCurrentChallengeDay();
+
+    selectedDay = currentDay;
+
+    renderChallengeDays();
+
+    renderDayChecklist(
+        currentDay
+    );
+
+    updateChallengeProgress();
+}
+
+async function initializeApplication() {
+    applyChallengeBranding();
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.auth.getSession();
+
+    if (error) {
+        console.error(
+            "Session check failed:",
+            error
+        );
+
+        showAuthentication();
+        return;
+    }
+
+    if (data.session) {
+        showDashboard();
+        initializeChallenge();
+        return;
+    }
+
+    showAuthentication();
+}
+
+supabaseClient.auth.onAuthStateChange(
+    (event, session) => {
+        if (
+            event === "SIGNED_IN" &&
+            session
+        ) {
+            showDashboard();
+
+            initializeChallenge();
+        }
+    }
+);
+
+// 
+initializeApplication();
