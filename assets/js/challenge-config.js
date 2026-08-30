@@ -90,6 +90,6 @@ const challengeConfig = {
         mutedColor: "#7f7b50",
 
         logo:   "./assets/images/bwamplerfit-logo.png",
-        heroImage: "./assets/images/strong-mom-hero.png"
+        heroImage: "./assets/images/strong-mom-hero.PNG"
     }
 };
