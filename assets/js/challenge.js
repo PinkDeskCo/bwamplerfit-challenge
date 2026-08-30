@@ -1,4 +1,4 @@
-console.log('SIGN UP TEST')
+console.log('new intake')
 
 "use strict";
 
