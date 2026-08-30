@@ -1,4 +1,4 @@
-console.log('SANITY CHECK')
+console.log('SANITY CHECK2')
 
 "use strict";
 
