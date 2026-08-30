@@ -1,4 +1,4 @@
-console.log('SANITY CHECK2')
+console.log('SIGN UP TEST')
 
 "use strict";
 
@@ -1053,7 +1053,8 @@ async function createParticipantAccount() {
     challengeAuthMessage.textContent =
         "Creating your account...";
 
-    const {
+   const {
+        data,
         error
     } =
         await supabaseClient.auth.signUp({
@@ -1073,8 +1074,13 @@ async function createParticipantAccount() {
         return;
     }
 
-    challengeAuthMessage.textContent =
-        "";
+    if (data.session) {
+        challengeAuthMessage.textContent =
+            "Account created. Signing you in...";
+    } else {
+        challengeAuthMessage.textContent =
+            "Account created. Check your email to confirm your account, then return here to sign in.";
+    }
 }
 
 
