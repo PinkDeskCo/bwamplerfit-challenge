@@ -1279,12 +1279,13 @@ body {
     .challenge-auth__challenge-image {
         display: block;
 
-        width: 150px;
-        height: 150px;
+        width: 120px !important;
+        max-width: 120px !important;
+        height: auto !important;
+
+        margin: 0 auto 12px;
 
         object-fit: contain;
-
-        margin-bottom: 10px;
     }
 
     .challenge-auth__challenge-name {
