@@ -1,3 +1,5 @@
+console.log('PERSISTING')
+
 "use strict";
 
 
