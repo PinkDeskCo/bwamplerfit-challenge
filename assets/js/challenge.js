@@ -1,4 +1,4 @@
-console.log('new intake')
+console.log('toggle')
 
 "use strict";
 
