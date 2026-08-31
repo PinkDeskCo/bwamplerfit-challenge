@@ -1,4 +1,4 @@
-console.log('changed buttons again2')
+console.log('sanity')
 
 "use strict";
 
@@ -1332,7 +1332,7 @@ function chooseAuthMode(mode) {
             "current-password";
 
         challengeAuthSubmit.textContent =
-            "Continue Challenge";
+            "";
     }
 
     challengeAuthEmail.focus();
