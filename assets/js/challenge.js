@@ -1,4 +1,4 @@
-console.log('missing tag')
+console.log('still struggling')
 
 "use strict";
 
@@ -1088,49 +1088,37 @@ async function createParticipantAccount(event) {
 function updateAuthMode() {
     challengeAuthMessage.textContent = "";
 
-    const switchLabel =
-        document.getElementById(
-            "challenge-auth-switch-label"
+    const authSwitch =
+        document.querySelector(
+            ".challenge-auth__switch"
         );
 
     if (authMode === "create") {
         challengeAuthSubmit.textContent =
             "Create Account";
 
-        switchLabel.textContent =
-            "Already have an account?";
-
-        challengeAuthModeToggle.textContent =
-            "Sign in";
-
         challengeAuthPassword.autocomplete =
             "new-password";
+
+        authSwitch.style.display = "none";
     } else {
         challengeAuthSubmit.textContent =
             "Continue Challenge";
 
-        switchLabel.textContent =
-            "First time here?";
-
-        challengeAuthModeToggle.textContent =
-            "Create account";
-
         challengeAuthPassword.autocomplete =
             "current-password";
+
+        authSwitch.style.display = "";
     }
 }
 
 function toggleAuthMode(event) {
     event.preventDefault();
 
-    authMode =
-        authMode === "signin"
-            ? "create"
-            : "signin";
+    authMode = "create";
 
     updateAuthMode();
 }
-
 
 /* ==================================================
    EVENT LISTENERS
