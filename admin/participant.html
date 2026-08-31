@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Participant Details | Strong Mom Challenge</title>
+
+  <link
+    rel="stylesheet"
+    href="../assets/css/admin.css"
+  />
+</head>
+
+<body>
+
+  <div class="admin-shell">
+
+    <header class="admin-header">
+
+      <div class="admin-header__brand">
+
+        <img
+          src="../assets/images/bwamplerfit-logo.png"
+          alt="BWamplerFit"
+          class="admin-header__logo"
+        />
+
+        <div>
+          <p class="admin-header__eyebrow">
+            Strong Mom September
+          </p>
+
+          <h1 class="admin-header__title">
+            Participant Details
+          </h1>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        id="admin-logout-button"
+        class="admin-header__logout"
+      >
+        Sign Out
+      </button>
+
+    </header>
+
+    <main class="admin-main">
+
+      <a
+        href="./index.html"
+        class="admin-back-link"
+      >
+        ← Back to Dashboard
+      </a>
+
+      <section class="admin-detail-header">
+
+        <p class="admin-participants__eyebrow">
+          Challenge Participant
+        </p>
+
+        <h2
+          id="participant-email"
+          class="admin-detail-header__email"
+        >
+          Loading...
+        </h2>
+
+      </section>
+
+      <section class="admin-detail-grid">
+
+        <article class="admin-detail-card">
+          <span class="admin-detail-card__label">
+            Joined
+          </span>
+
+          <strong
+            id="participant-joined"
+            class="admin-detail-card__value"
+          >
+            —
+          </strong>
+        </article>
+
+        <article class="admin-detail-card">
+          <span class="admin-detail-card__label">
+            Started
+          </span>
+
+          <strong
+            id="participant-started"
+            class="admin-detail-card__value"
+          >
+            —
+          </strong>
+        </article>
+
+        <article class="admin-detail-card">
+          <span class="admin-detail-card__label">
+            Last Activity
+          </span>
+
+          <strong
+            id="participant-last-activity"
+            class="admin-detail-card__value"
+          >
+            —
+          </strong>
+        </article>
+
+        <article class="admin-detail-card">
+          <span class="admin-detail-card__label">
+            Status
+          </span>
+
+          <strong
+            id="participant-status"
+            class="admin-detail-card__value"
+          >
+            —
+          </strong>
+        </article>
+
+      </section>
+
+      <section class="admin-detail-section">
+
+        <div class="admin-detail-section__header">
+
+          <div>
+            <p class="admin-participants__eyebrow">
+              Progress
+            </p>
+
+            <h2 class="admin-detail-section__title">
+              Challenge Progress
+            </h2>
+          </div>
+
+          <div class="admin-detail-progress__numbers">
+
+            <strong id="participant-progress-percent">
+              0%
+            </strong>
+
+            <span id="participant-activities">
+              0 / 52 activities
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="admin-detail-progress-bar">
+          <div
+            id="participant-progress-bar"
+            class="admin-detail-progress-bar__fill"
+          ></div>
+        </div>
+
+      </section>
+
+      <section class="admin-detail-section">
+
+        <div class="admin-detail-section__header">
+
+          <div>
+            <p class="admin-participants__eyebrow">
+              30-Day Challenge
+            </p>
+
+            <h2 class="admin-detail-section__title">
+              Daily Progress
+            </h2>
+          </div>
+
+        </div>
+
+        <div
+          id="admin-challenge-heatmap"
+          class="admin-challenge-heatmap"
+        >
+        </div>
+
+        <div class="admin-heatmap-legend">
+
+          <span>
+            <i class="admin-legend-box"></i>
+            Not completed
+          </span>
+
+          <span>
+            <i class="admin-legend-box is-partial"></i>
+            Partial
+          </span>
+
+          <span>
+            <i class="admin-legend-box is-completed"></i>
+            Completed
+          </span>
+
+          <span>
+            <i class="admin-legend-box is-rest"></i>
+            Rest day
+          </span>
+
+        </div>
+
+      </section>
+
+      <section class="admin-detail-section">
+
+        <div class="admin-detail-section__header">
+
+          <div>
+            <p class="admin-participants__eyebrow">
+              Completion
+            </p>
+
+            <h2 class="admin-detail-section__title">
+              Certificate
+            </h2>
+          </div>
+
+        </div>
+
+        <dl class="admin-completion-list">
+
+          <div>
+            <dt>Challenge Completed</dt>
+            <dd id="participant-completed">
+              No
+            </dd>
+          </div>
+
+          <div>
+            <dt>Completion Date</dt>
+            <dd id="participant-completion-date">
+              —
+            </dd>
+          </div>
+
+          <div>
+            <dt>Certificate Name</dt>
+            <dd id="participant-certificate-name">
+              —
+            </dd>
+          </div>
+
+          <div>
+            <dt>Certificate Status</dt>
+            <dd id="participant-certificate-status">
+              Not Yet Earned
+            </dd>
+          </div>
+
+        </dl>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/admin/admin-auth.js"></script>
+  <script src="../assets/js/admin/participant.js"></script>
+
+</body>
+</html>

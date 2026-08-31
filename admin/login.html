@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Strong Mom Challenge Admin</title>
+
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+
+<body>
+
+  <main class="admin-login">
+
+    <section class="admin-login__card">
+
+      <img
+        src="../assets/images/bwamplerfit-logo.png"
+        alt="BWamplerFit"
+        class="admin-login__logo"
+      />
+
+      <p class="admin-login__eyebrow">
+        Strong Mom September
+      </p>
+
+      <h1 class="admin-login__title">
+        Admin Dashboard
+      </h1>
+
+      <p class="admin-login__intro">
+        Sign in to view participant progress.
+      </p>
+
+      <form
+        id="admin-login-form"
+        class="admin-login__form"
+      >
+
+        <div class="admin-login__field">
+          <label for="admin-email">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="admin-email"
+            name="email"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="admin-login__field">
+          <label for="admin-password">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="admin-password"
+            name="password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="admin-login__button"
+        >
+          Sign In
+        </button>
+
+        <p
+          id="admin-login-message"
+          class="admin-login__message"
+          aria-live="polite"
+        ></p>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/admin/admin-auth.js"></script>
+
+</body>
+</html>

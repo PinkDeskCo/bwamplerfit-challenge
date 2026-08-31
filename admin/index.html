@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Strong Mom Challenge Admin Dashboard</title>
+
+  <link
+    rel="stylesheet"
+    href="../assets/css/admin.css"
+  />
+</head>
+
+<body>
+
+  <div class="admin-shell">
+
+    <header class="admin-header">
+
+      <div class="admin-header__brand">
+        <img
+          src="../assets/images/bwamplerfit-logo.png"
+          alt="BWamplerFit"
+          class="admin-header__logo"
+        />
+
+        <div>
+          <p class="admin-header__eyebrow">
+            Strong Mom September
+          </p>
+
+          <h1 class="admin-header__title">
+            Admin Dashboard
+          </h1>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="admin-logout-button"
+        class="admin-header__logout"
+      >
+        Sign Out
+      </button>
+
+    </header>
+
+    <main class="admin-main">
+
+      <section
+        class="admin-summary"
+        aria-label="Challenge summary"
+      >
+
+        <article class="admin-summary-card">
+          <span class="admin-summary-card__label">
+            Participants
+          </span>
+
+          <strong
+            id="summary-participants"
+            class="admin-summary-card__value"
+          >
+            0
+          </strong>
+        </article>
+
+        <article class="admin-summary-card">
+          <span class="admin-summary-card__label">
+            Started
+          </span>
+
+          <strong
+            id="summary-started"
+            class="admin-summary-card__value"
+          >
+            0
+          </strong>
+        </article>
+
+        <article class="admin-summary-card">
+          <span class="admin-summary-card__label">
+            Average Progress
+          </span>
+
+          <strong
+            id="summary-average-progress"
+            class="admin-summary-card__value"
+          >
+            0%
+          </strong>
+        </article>
+
+        <article class="admin-summary-card">
+          <span class="admin-summary-card__label">
+            Completed
+          </span>
+
+          <strong
+            id="summary-completed"
+            class="admin-summary-card__value"
+          >
+            0
+          </strong>
+        </article>
+
+        <article class="admin-summary-card">
+          <span class="admin-summary-card__label">
+            Not Started
+          </span>
+
+          <strong
+            id="summary-not-started"
+            class="admin-summary-card__value"
+          >
+            0
+          </strong>
+        </article>
+
+      </section>
+
+      <section class="admin-participants">
+
+        <div class="admin-participants__header">
+
+          <div>
+            <p class="admin-participants__eyebrow">
+              Participant Progress
+            </p>
+
+            <h2 class="admin-participants__title">
+              Challenge Participants
+            </h2>
+          </div>
+
+          <div class="admin-participants__controls">
+
+            <label
+              for="participant-search"
+              class="sr-only"
+            >
+              Search participants
+            </label>
+
+            <input
+              type="search"
+              id="participant-search"
+              class="admin-participants__search"
+              placeholder="Search by email"
+            />
+
+            <label
+              for="participant-status-filter"
+              class="sr-only"
+            >
+              Filter by status
+            </label>
+
+            <select
+              id="participant-status-filter"
+              class="admin-participants__filter"
+            >
+              <option value="all">
+                All Statuses
+              </option>
+
+              <option value="not-started">
+                Not Started
+              </option>
+
+              <option value="in-progress">
+                In Progress
+              </option>
+
+              <option value="completed">
+                Completed
+              </option>
+            </select>
+
+          </div>
+
+        </div>
+
+        <div class="admin-table-wrap">
+
+          <table class="admin-table">
+
+            <thead>
+              <tr>
+                <th>Participant</th>
+                <th>Joined</th>
+                <th>Progress</th>
+                <th>Activities</th>
+                <th>Last Activity</th>
+                <th>Status</th>
+                <th>
+                  <span class="sr-only">
+                    Actions
+                  </span>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody id="participant-table-body">
+
+              <tr>
+                <td
+                  colspan="7"
+                  class="admin-table__empty"
+                >
+                  Loading participants...
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/admin/admin-auth.js"></script>
+  <script src="../assets/js/admin/dashboard.js"></script>
+
+</body>
+</html>
