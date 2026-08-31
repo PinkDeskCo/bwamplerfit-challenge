@@ -1,4 +1,4 @@
-console.log('retesting completion')
+console.log('completion scroll')
 
 "use strict";
 
@@ -562,6 +562,16 @@ async function handleTaskChange(event) {
         renderDayChecklist(
             selectedDay
         );
+    }
+     if (
+        !wasComplete &&
+        challengeCompletedAt &&
+        challengeCompletion
+    ) {
+        challengeCompletion.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
     }
 }
 
