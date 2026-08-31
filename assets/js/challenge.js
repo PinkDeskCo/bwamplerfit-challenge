@@ -1,4 +1,4 @@
-console.log('sanity')
+console.log('sanity 2')
 
 "use strict";
 
