@@ -1,4 +1,4 @@
-console.log('toggle sanity')
+console.log('testing')
 
 "use strict";
 
@@ -1084,6 +1084,7 @@ async function createParticipantAccount(event) {
             "Account created. Check your email to confirm your account, then return here to sign in.";
     }
 }
+
 function updateAuthMode() {
     challengeAuthMessage.textContent = "";
 
@@ -1091,17 +1092,14 @@ function updateAuthMode() {
         challengeAuthSubmit.textContent =
             "Create Account";
 
-        challengeAuthModeToggle.hidden =
-            true;
+        challengeAuthModeToggle.textContent =
+            "Already have an account? Sign in";
 
         challengeAuthPassword.autocomplete =
             "new-password";
     } else {
         challengeAuthSubmit.textContent =
             "Continue Challenge";
-
-        challengeAuthModeToggle.hidden =
-            false;
 
         challengeAuthModeToggle.textContent =
             "First time here? Create account";
