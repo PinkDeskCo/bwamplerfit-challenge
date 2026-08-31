@@ -1,4 +1,4 @@
-console.log('sanity 2')
+console.log('again')
 
 "use strict";
 
@@ -1332,7 +1332,7 @@ function chooseAuthMode(mode) {
             "current-password";
 
         challengeAuthSubmit.textContent =
-            "";
+            " Continue To Challenge";
     }
 
     challengeAuthEmail.focus();
