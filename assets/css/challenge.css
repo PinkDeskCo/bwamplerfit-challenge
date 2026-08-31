@@ -874,21 +874,54 @@ body {
             );
     }
 
-    .challenge-auth__switch {
-        margin: 10px 0 0;
-
-        text-align: center;
-
-        color: var(--challenge-primary);
-
-        font-size: 0.9rem;
+    [hidden] {
+        display: none !important;
     }
 
-    .challenge-auth__switch a {
-        color: var(--challenge-primary);
+    .challenge-auth__choices {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
 
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .challenge-auth__choice-button {
+        min-height: 48px;
+
+        padding: 14px 18px;
+
+        border: 2px solid
+            var(--challenge-primary);
+
+        border-radius: 999px;
+
+        background:
+            var(--challenge-primary);
+
+        color: #ffffff;
+
+        font: inherit;
+        font-size: 0.82rem;
         font-weight: 700;
-        text-decoration: underline;
+
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+
+        cursor: pointer;
+
+        transition:
+            transform 180ms ease,
+            box-shadow 180ms ease;
+    }
+
+    .challenge-auth__choice-button:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 24px
+            rgb(31 58 95 / 18%);
     }
     /* ==================================================
     ACCESS BUTTON

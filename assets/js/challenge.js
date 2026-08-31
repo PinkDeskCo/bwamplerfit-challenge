@@ -1,4 +1,4 @@
-console.log('new form')
+console.log('new sign in attempt')
 
 "use strict";
 
@@ -26,7 +26,10 @@ const challengeAuthMessage = document.getElementById("challenge-auth-message");
 const challengeDashboard = document.getElementById("challenge-dashboard");
 const challengeAuthPassword = document.getElementById( "challenge-auth-password");
 const challengeAuthSubmit = document.getElementById("challenge-auth-submit");
-const challengeAuthModeToggle = document.getElementById("challenge-auth-mode-toggle");
+const challengeAuthChoices = document.getElementById("challenge-auth-choices");
+const challengeAuthSigninChoice = document.getElementById("challenge-auth-signin-choice");
+const challengeAuthCreateChoice = document.getElementById("challenge-auth-create-choice");
+const challengeAuthPasswordLabel = document.getElementById("challenge-auth-password-label");
 const certificateNameInput = document.getElementById("challenge-certificate-name-input");
 const certificateCreateButton = document.getElementById("challenge-certificate-create");
 const certificateNameMessage = document.getElementById("challenge-certificate-name-message");
@@ -44,7 +47,7 @@ let selectedDay = null;
 let currentParticipantId = null;
 let challengeCompletedAt = null;
 let challengeCertificateName = null;
-let authMode = "signin";
+let authMode = null;
 
 /* ==================================================
    DATE HELPERS
@@ -1085,39 +1088,35 @@ async function createParticipantAccount(event) {
     }
 }
 
-function updateAuthMode() {
+function chooseAuthMode(mode) {
+    authMode = mode;
+
     challengeAuthMessage.textContent = "";
 
-    const authSwitch =
-        document.querySelector(
-            ".challenge-auth__switch"
-        );
+    challengeAuthChoices.hidden = true;
+    challengeAuthForm.hidden = false;
 
     if (authMode === "create") {
-        challengeAuthSubmit.textContent =
-            "Create Account";
+        challengeAuthPasswordLabel.textContent =
+            "Create password";
 
         challengeAuthPassword.autocomplete =
             "new-password";
 
-        authSwitch.style.display = "none";
-    } else {
         challengeAuthSubmit.textContent =
-            "Continue Challenge";
+            "Create Account";
+    } else {
+        challengeAuthPasswordLabel.textContent =
+            "Password";
 
         challengeAuthPassword.autocomplete =
             "current-password";
 
-        authSwitch.style.display = "";
+        challengeAuthSubmit.textContent =
+            "Continue Challenge";
     }
-}
 
-function toggleAuthMode(event) {
-    event.preventDefault();
-
-    authMode = "create";
-
-    updateAuthMode();
+    challengeAuthEmail.focus();
 }
 
 /* ==================================================
@@ -1142,9 +1141,18 @@ challengeAuthForm.addEventListener(
     }
 );
 
-challengeAuthModeToggle.addEventListener(
+challengeAuthSigninChoice.addEventListener(
     "click",
-    toggleAuthMode
+    () => {
+        chooseAuthMode("signin");
+    }
+);
+
+challengeAuthCreateChoice.addEventListener(
+    "click",
+    () => {
+        chooseAuthMode("create");
+    }
 );
 /* ==================================================
    INITIALIZE

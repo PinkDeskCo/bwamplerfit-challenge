@@ -50,27 +50,36 @@
                 </h1>
 
                 <p class="challenge-auth__text">
-                    Enter your email and we’ll send you a secure sign-in link.
-                    Once you’re signed in, your challenge progress will save
-                    automatically and follow you across devices.
+                    Sign in to continue your challenge,
+                    or get started to create your account.
+                    Your progress saves automatically
+                    and follows you across devices.
                 </p>
-
-                <p class="challenge-auth__switch">
-                    <span id="challenge-auth-switch-label">
-                        First time here?
-                    </span>
-
-                    <a
-                        href="#"
-                        id="challenge-auth-mode-toggle"
+                <div
+                    class="challenge-auth__choices"
+                    id="challenge-auth-choices"
+                >
+                    <button
+                        class="challenge-auth__choice-button"
+                        id="challenge-auth-signin-choice"
+                        type="button"
                     >
-                        Create account
-                    </a>
-                </p>
+                        Sign In
+                    </button>
+
+                    <button
+                        class="challenge-auth__choice-button"
+                        id="challenge-auth-create-choice"
+                        type="button"
+                    >
+                        Get Started
+                    </button>
+                </div>
 
                 <form
                     class="challenge-auth__form"
                     id="challenge-auth-form"
+                    hidden
                 >
                     <label
                         class="challenge-auth__label"
@@ -90,6 +99,7 @@
                     <label
                         class="challenge-auth__label"
                         for="challenge-auth-password"
+                        id="challenge-auth-password-label"
                     >
                         Password
                     </label>
@@ -111,6 +121,7 @@
                         Continue Challenge
                     </button>
                 </form>
+
                 <p
                     class="challenge-auth__message"
                     id="challenge-auth-message"
