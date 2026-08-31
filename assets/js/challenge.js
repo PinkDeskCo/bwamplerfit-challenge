@@ -1,4 +1,4 @@
-console.log('testing dashboard')
+console.log('dashboard complete: v1')
 
 "use strict";
 
@@ -110,39 +110,39 @@ function getTasksForDay(dayNumber) {
 ================================================== */
 
 
-// function getCurrentChallengeDay() {
-//     const startDate =
-//         new Date(
-//             `${challengeConfig.startDate}T00:00:00`
-//         );
-
-//     const today =
-//         new Date();
-
-//     startDate.setHours(0, 0, 0, 0);
-//     today.setHours(0, 0, 0, 0);
-
-//     const difference =
-//         today - startDate;
-
-//     if (difference < 0) {
-//         return 0;
-//     }
-
-//     const dayNumber =
-//         Math.floor(
-//             difference / 86400000
-//         ) + 1;
-
-//     return Math.min(
-//         dayNumber,
-//         challengeConfig.totalDays
-//     );
-// }
-
 function getCurrentChallengeDay() {
-    return challengeConfig.totalDays;
+    const startDate =
+        new Date(
+            `${challengeConfig.startDate}T00:00:00`
+        );
+
+    const today =
+        new Date();
+
+    startDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    const difference =
+        today - startDate;
+
+    if (difference < 0) {
+        return 0;
+    }
+
+    const dayNumber =
+        Math.floor(
+            difference / 86400000
+        ) + 1;
+
+    return Math.min(
+        dayNumber,
+        challengeConfig.totalDays
+    );
 }
+
+// function getCurrentChallengeDay() {
+//     return challengeConfig.totalDays;
+// }
 
 // function getCurrentChallengeDay() {
 //     return 1;
