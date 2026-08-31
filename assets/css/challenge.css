@@ -874,23 +874,21 @@ body {
             );
     }
 
-    .challenge-auth__mode-toggle {
-        display: block;
+    .challenge-auth__switch {
+        margin: 10px 0 0;
 
-        margin: 14px auto 0;
-        padding: 0;
-
-        background: transparent;
-        border: 0;
+        text-align: center;
 
         color: var(--challenge-primary);
 
-        font: inherit;
         font-size: 0.9rem;
+    }
 
+    .challenge-auth__switch a {
+        color: var(--challenge-primary);
+
+        font-weight: 700;
         text-decoration: underline;
-
-        cursor: pointer;
     }
     /* ==================================================
     ACCESS BUTTON

@@ -1,4 +1,4 @@
-console.log('testing')
+console.log('one final test')
 
 "use strict";
 
@@ -1088,12 +1088,20 @@ async function createParticipantAccount(event) {
 function updateAuthMode() {
     challengeAuthMessage.textContent = "";
 
+    const switchLabel =
+        document.getElementById(
+            "challenge-auth-switch-label"
+        );
+
     if (authMode === "create") {
         challengeAuthSubmit.textContent =
             "Create Account";
 
+        switchLabel.textContent =
+            "Already have an account?";
+
         challengeAuthModeToggle.textContent =
-            "Already have an account? Sign in";
+            "Sign in";
 
         challengeAuthPassword.autocomplete =
             "new-password";
@@ -1101,15 +1109,20 @@ function updateAuthMode() {
         challengeAuthSubmit.textContent =
             "Continue Challenge";
 
+        switchLabel.textContent =
+            "First time here?";
+
         challengeAuthModeToggle.textContent =
-            "First time here? Create account";
+            "Create account";
 
         challengeAuthPassword.autocomplete =
             "current-password";
     }
 }
 
-function toggleAuthMode() {
+function toggleAuthMode(event) {
+    event.preventDefault();
+
     authMode =
         authMode === "signin"
             ? "create"
