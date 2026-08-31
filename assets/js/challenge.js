@@ -1,4 +1,4 @@
-console.log('completion AGAIN')
+console.log('PROJECT COMPLETE')
 
 "use strict";
 
