@@ -1,4 +1,4 @@
-console.log('new sign in attempt')
+console.log('white signup button')
 
 "use strict";
 
