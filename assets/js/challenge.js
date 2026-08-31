@@ -1,4 +1,4 @@
-console.log('content wrapper')
+console.log('testing day 1')
 
 "use strict";
 
@@ -1405,15 +1405,25 @@ async function initializeChallenge() {
     renderChallengeHeader();
 
     const currentDay =
-        getCurrentChallengeDay();
+        // getCurrentChallengeDay();
 
-    selectedDay = currentDay;
+        function getCurrentChallengeDay() {
+            return 1;
+        }
 
-    renderChallengeDays();
+    if (currentDay > 0) {
+        selectedDay = currentDay;
 
-    renderDayChecklist(
-        currentDay
-    );
+        renderChallengeDays();
+
+        renderDayChecklist(
+            currentDay
+        );
+    } else {
+        selectedDay = null;
+
+        renderChallengeDays();
+    }
 
     updateChallengeProgress();
 }
