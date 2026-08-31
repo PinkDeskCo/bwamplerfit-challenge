@@ -1,4 +1,4 @@
-console.log('changed sign in form')
+console.log('create account link')
 
 "use strict";
 
@@ -1234,9 +1234,13 @@ async function signInParticipant(event) {
         challengeAuthMessage.innerHTML = `
             We couldn't sign you in with those details.<br>
             If you haven't created an account yet,
-            choose Create Account.
+            <a
+                href="./"
+                class="challenge-auth__create-link"
+            >
+                Create Account
+            </a>.
         `;
-
         return;
     }
 
