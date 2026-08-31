@@ -1,4 +1,4 @@
-console.log('create account link')
+console.log('changed buttons')
 
 "use strict";
 
