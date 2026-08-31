@@ -1,4 +1,4 @@
-console.log('testing completion')
+console.log('retesting completion')
 
 "use strict";
 
@@ -538,7 +538,7 @@ function renderDayChecklist(dayNumber) {
    TASK CHANGE
 ================================================== */
 
-function handleTaskChange(event) {
+async function handleTaskChange(event) {
     const checkbox =
         event.currentTarget;
 
@@ -552,11 +552,11 @@ function handleTaskChange(event) {
         taskId
     ] = checkbox.checked;
 
-    saveChallengeProgress();
+    await saveChallengeProgress();
 
     renderChallengeDays();
     updateChallengeProgress();
-
+    updateCompletionState();
 
     if (selectedDay !== null) {
         renderDayChecklist(
