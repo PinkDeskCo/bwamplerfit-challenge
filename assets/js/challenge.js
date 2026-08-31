@@ -1,4 +1,4 @@
-console.log('COMPLETED: heatmap working and designed')
+console.log('changed sign in form')
 
 "use strict";
 
@@ -1231,8 +1231,11 @@ async function signInParticipant(event) {
             error
         );
 
-        challengeAuthMessage.textContent =
-            "Email or password is incorrect.";
+        challengeAuthMessage.innerHTML = `
+            We couldn't sign you in with those details.<br>
+            If you haven't created an account yet,
+            choose Create Account.
+        `;
 
         return;
     }
@@ -1283,12 +1286,21 @@ async function createParticipantAccount(event) {
     }
 
     if (data.session) {
-        challengeAuthMessage.textContent =
-            "Account created. Signing you in...";
-    } else {
-        challengeAuthMessage.textContent =
-            "Account created. Check your email to confirm your account, then return here to sign in.";
-    }
+            challengeAuthForm.hidden = true;
+
+            challengeAuthMessage.textContent =
+                "Account created. Signing you in...";
+
+            return;
+        }
+
+        challengeAuthForm.hidden = true;
+
+        challengeAuthMessage.innerHTML = `
+            <strong>Your account has been created.</strong><br>
+            Check your email to confirm your account,
+            then return here and sign in.
+        `;
 }
 
 function chooseAuthMode(mode) {
