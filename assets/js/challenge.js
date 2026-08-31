@@ -1,4 +1,4 @@
-console.log('hover')
+console.log('COMPLETED: heatmap working and designed')
 
 "use strict";
 
@@ -38,6 +38,10 @@ const certificateReadySection = document.getElementById("challenge-certificate-r
 const certificateDisplayName = document.getElementById("challenge-certificate-display-name");
 const certificatePreviewName = document.getElementById("challenge-certificate-preview-name");
 const certificatePreviewDate = document.getElementById("challenge-certificate-preview-date");
+const certificateDownloadButton = document.getElementById( "challenge-certificate-download");
+const certificateEditButton = document.getElementById("challenge-certificate-edit");
+const certificatePreview = document.getElementById("challenge-certificate-preview");
+
 /* ==================================================
    PARTICIPANT PROGRESS
 ================================================== */
@@ -104,31 +108,6 @@ function getTasksForDay(dayNumber) {
    CURRENT CHALLENGE DAY
 ================================================== */
 
-// function getCurrentChallengeDay() {
-//     const startDate =
-//         new Date(
-//             `${challengeConfig.startDate}T00:00:00`
-//         );
-
-//     const today =
-//         new Date();
-
-//     startDate.setHours(0, 0, 0, 0);
-//     today.setHours(0, 0, 0, 0);
-
-//     const difference =
-//         today - startDate;
-
-//     const dayNumber =
-//         Math.floor(
-//             difference / 86400000
-//         ) + 1;
-
-//     return Math.min(
-//         Math.max(dayNumber, 1),
-//         challengeConfig.totalDays
-//     );
-// }
 
 function getCurrentChallengeDay() {
     const startDate =
@@ -985,6 +964,230 @@ async function saveCertificateName() {
 
     certificateCreateButton.disabled = false;
 }
+
+function editCertificateName() {
+    certificateNameInput.value =
+        challengeCertificateName || "";
+
+    certificateNameMessage.textContent = "";
+
+    certificateReadySection.hidden = true;
+    certificateNameSection.hidden = false;
+
+    certificateNameInput.focus();
+}
+
+async function downloadCertificate() {
+    if (
+        !certificatePreview ||
+        !challengeCertificateName
+    ) {
+        return;
+    }
+
+    certificateDownloadButton.disabled = true;
+
+    const originalText =
+        certificateDownloadButton.textContent;
+
+    certificateDownloadButton.textContent =
+        "Preparing Certificate...";
+
+    let exportCertificate = null;
+
+    try {
+        /*
+         * Create a separate certificate
+         * specifically for PDF export.
+         */
+        exportCertificate =
+            certificatePreview.cloneNode(true);
+
+        exportCertificate.removeAttribute("id");
+
+        exportCertificate
+            .querySelectorAll("[id]")
+            .forEach((element) => {
+                element.removeAttribute("id");
+            });
+
+        exportCertificate.classList.add(
+            "is-exporting"
+        );
+
+        document.body.appendChild(
+            exportCertificate
+        );
+
+        const exportHero =
+            exportCertificate.querySelector(
+                ".challenge-certificate-preview__hero"
+            );
+
+        const exportEyebrow =
+            exportCertificate.querySelector(
+                ".challenge-certificate-preview__eyebrow"
+            );
+
+        const exportPresented =
+            exportCertificate.querySelector(
+                ".challenge-certificate-preview__presented"
+            );
+
+        const exportName =
+            exportCertificate.querySelector(
+                ".challenge-certificate-preview__name"
+            );
+
+        const exportFor =
+            exportCertificate.querySelector(
+                ".challenge-certificate-preview__for"
+            );
+
+        const exportChallenge =
+            exportCertificate.querySelector(
+                ".challenge-certificate-preview__challenge"
+            );
+
+        const exportStatement =
+            exportCertificate.querySelector(
+                ".challenge-certificate-preview__statement"
+            );
+
+        [
+            exportHero,
+            exportEyebrow,
+            exportPresented,
+            exportName,
+            exportFor,
+            exportChallenge,
+            exportStatement
+        ].forEach((element) => {
+            if (element) {
+                element.style.transform =
+                    "translateY(55px)";
+            }
+        });
+
+        /*
+         * Make sure fonts and images
+         * are completely loaded.
+         */
+        if (document.fonts?.ready) {
+            await document.fonts.ready;
+        }
+
+        const images =
+            exportCertificate.querySelectorAll(
+                "img"
+            );
+
+        await Promise.all(
+            Array.from(images).map(
+                async (image) => {
+                    if (image.complete) {
+                        try {
+                            await image.decode();
+                        } catch {
+                            return;
+                        }
+
+                        return;
+                    }
+
+                    await new Promise(
+                        (resolve) => {
+                            image.onload = resolve;
+                            image.onerror = resolve;
+                        }
+                    );
+                }
+            )
+        );
+
+        /*
+         * Capture the fixed-size
+         * export certificate.
+         */
+        const canvas =
+            await html2canvas(
+                exportCertificate,
+                {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor:
+                        "#fbfaf3",
+
+                    width: 1056,
+                    height: 816,
+
+                    windowWidth: 1056,
+                    windowHeight: 816
+                }
+            );
+
+        const imageData =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+        const {
+            jsPDF
+        } = window.jspdf;
+
+        const pdf =
+            new jsPDF({
+                orientation: "landscape",
+                unit: "in",
+                format: "letter"
+            });
+
+        pdf.addImage(
+            imageData,
+            "PNG",
+            0,
+            0,
+            11,
+            8.5
+        );
+
+        const safeName =
+            challengeCertificateName
+                .trim()
+                .replace(
+                    /[^a-z0-9]+/gi,
+                    "-"
+                )
+                .replace(
+                    /^-+|-+$/g,
+                    ""
+                );
+
+        pdf.save(
+            `BWamplerFit-30-Day-Challenge-Certificate-${safeName}.pdf`
+        );
+    } catch (error) {
+        console.error(
+            "Certificate download failed:",
+            error
+        );
+
+        alert(
+            "We couldn't create your certificate. Please try again."
+        );
+    } finally {
+        if (exportCertificate) {
+            exportCertificate.remove();
+        }
+
+        certificateDownloadButton.disabled =
+            false;
+
+        certificateDownloadButton.textContent =
+            originalText;
+    }
+}
+
 /* ==================================================
    AUTHENTICATION
 ================================================== */
@@ -1127,6 +1330,20 @@ if (certificateCreateButton) {
     certificateCreateButton.addEventListener(
         "click",
         saveCertificateName
+    );
+}
+
+if (certificateEditButton) {
+    certificateEditButton.addEventListener(
+        "click",
+        editCertificateName
+    );
+}
+
+if (certificateDownloadButton) {
+    certificateDownloadButton.addEventListener(
+        "click",
+        downloadCertificate
     );
 }
 
