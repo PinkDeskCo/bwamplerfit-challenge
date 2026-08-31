@@ -1,4 +1,4 @@
-console.log('completion scroll')
+console.log('completion AGAIN')
 
 "use strict";
 
@@ -551,6 +551,9 @@ async function handleTaskChange(event) {
     challengeProgress[day].tasks[
         taskId
     ] = checkbox.checked;
+
+    const wasComplete =
+    Boolean(challengeCompletedAt);
 
     await saveChallengeProgress();
 
