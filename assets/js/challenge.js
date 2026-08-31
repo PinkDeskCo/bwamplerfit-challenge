@@ -1,4 +1,4 @@
-console.log('retesting day 1')
+console.log('testing completion')
 
 "use strict";
 
@@ -140,13 +140,13 @@ function getTasksForDay(dayNumber) {
 //     );
 // }
 
-// function getCurrentChallengeDay() {
-//     return challengeConfig.totalDays;
-// }
-
 function getCurrentChallengeDay() {
-    return 1;
+    return challengeConfig.totalDays;
 }
+
+// function getCurrentChallengeDay() {
+//     return 1;
+// }
 /* ==================================================
    BRANDING
 ================================================== */
