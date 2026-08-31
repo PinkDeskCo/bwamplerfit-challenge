@@ -1,4 +1,4 @@
-console.log('again')
+console.log('content wrapper')
 
 "use strict";
 
@@ -20,6 +20,7 @@ const challengeHeroImage = document.getElementById("challenge-hero-image");
 const challengeProgressCircle =  document.getElementById( "challenge-progress-circle");
 const challengeProgressPercent = document.getElementById("challenge-progress-percent");
 const challengeAuth = document.getElementById( "challenge-auth");
+const challengeAuthContent = document.getElementById("challenge-auth-content");
 const challengeAuthForm = document.getElementById("challenge-auth-form");
 const challengeAuthEmail = document.getElementById( "challenge-auth-email");
 const challengeAuthMessage = document.getElementById("challenge-auth-message");
@@ -1298,7 +1299,7 @@ async function createParticipantAccount(event) {
             return;
         }
 
-        challengeAuthForm.hidden = true;
+        challengeAuthContent.hidden = true;
 
         challengeAuthMessage.innerHTML = `
             <strong>Your account has been created.</strong><br>

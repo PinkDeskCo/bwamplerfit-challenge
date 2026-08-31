@@ -23,104 +23,109 @@
         >
             <div class="challenge-auth__card">
 
-                <div class="challenge-auth__challenge">
-
-                    <img
-                        class="challenge-auth__challenge-image"
-                        src="./assets/images/strong-mom-hero.PNG"
-                        alt="Strong Mom September"
-                    >
-
-                    <p class="challenge-auth__challenge-name">
-                        Strong Mom September
-                    </p>
-
-                    <p class="challenge-auth__challenge-dates">
-                        September 1–30
-                    </p>
-
-                </div>
-
-                <p class="challenge-auth__eyebrow">
-                    Your Challenge Access
-                </p>
-
-                <h1 class="challenge-auth__title">
-                    Your challenge starts here.
-                </h1>
-
-                <p class="challenge-auth__text">
-                    Sign in to continue your challenge,
-                    or get started to create your account.
-                    Your progress saves automatically
-                    and follows you across devices.
-                </p>
-                <div
-                    class="challenge-auth__choices"
-                    id="challenge-auth-choices"
+                <div class="challenge-auth__content"
+                    id="challenge-auth-content"
                 >
-                    <button
-                        class="challenge-auth__choice-button-one"
-                        id="challenge-auth-signin-choice"
-                        type="button"
-                    >
-                        Start The Challenge
-                    </button>
 
-                    <button
-                        class="challenge-auth__choice-button"
-                        id="challenge-auth-create-choice"
-                        type="button"
-                    >
-                        Create Account
-                    </button>
+                        <div class="challenge-auth__challenge">
+
+                            <img
+                                class="challenge-auth__challenge-image"
+                                src="./assets/images/strong-mom-hero.PNG"
+                                alt="Strong Mom September"
+                            >
+
+                            <p class="challenge-auth__challenge-name">
+                                Strong Mom September
+                            </p>
+
+                            <p class="challenge-auth__challenge-dates">
+                                September 1–30
+                            </p>
+
+                        </div>
+
+                        <p class="challenge-auth__eyebrow">
+                            Your Challenge Access
+                        </p>
+
+                        <h1 class="challenge-auth__title">
+                            Your challenge starts here.
+                        </h1>
+
+                        <p class="challenge-auth__text">
+                            Sign in to continue your challenge,
+                            or get started to create your account.
+                            Your progress saves automatically
+                            and follows you across devices.
+                        </p>
+                        <div
+                            class="challenge-auth__choices"
+                            id="challenge-auth-choices"
+                        >
+                            <button
+                                class="challenge-auth__choice-button-one"
+                                id="challenge-auth-signin-choice"
+                                type="button"
+                            >
+                                Start The Challenge
+                            </button>
+
+                            <button
+                                class="challenge-auth__choice-button"
+                                id="challenge-auth-create-choice"
+                                type="button"
+                            >
+                                Create Account
+                            </button>
+                        </div>
+
+                        <form
+                            class="challenge-auth__form"
+                            id="challenge-auth-form"
+                            hidden
+                        >
+                            <label
+                                class="challenge-auth__label"
+                                for="challenge-auth-email"
+                            >
+                                Email address
+                            </label>
+
+                            <input
+                                class="challenge-auth__input"
+                                id="challenge-auth-email"
+                                type="email"
+                                autocomplete="email"
+                                required
+                            >
+
+                            <label
+                                class="challenge-auth__label"
+                                for="challenge-auth-password"
+                                id="challenge-auth-password-label"
+                            >
+                                Password
+                            </label>
+
+                            <input
+                                class="challenge-auth__input"
+                                id="challenge-auth-password"
+                                type="password"
+                                autocomplete="current-password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                class="challenge-auth__button"
+                                type="submit"
+                                id="challenge-auth-submit"
+                            >
+                                Continue To Challenge
+                            </button>
+                        </form>
                 </div>
-
-                <form
-                    class="challenge-auth__form"
-                    id="challenge-auth-form"
-                    hidden
-                >
-                    <label
-                        class="challenge-auth__label"
-                        for="challenge-auth-email"
-                    >
-                        Email address
-                    </label>
-
-                    <input
-                        class="challenge-auth__input"
-                        id="challenge-auth-email"
-                        type="email"
-                        autocomplete="email"
-                        required
-                    >
-
-                    <label
-                        class="challenge-auth__label"
-                        for="challenge-auth-password"
-                        id="challenge-auth-password-label"
-                    >
-                        Password
-                    </label>
-
-                    <input
-                        class="challenge-auth__input"
-                        id="challenge-auth-password"
-                        type="password"
-                        autocomplete="current-password"
-                        minlength="6"
-                        required
-                    >
-
-                    <button
-                        class="challenge-auth__button"
-                        type="submit"
-                        id="challenge-auth-submit"
-                    >
-                        Continue To Challenge
-                    </button>
-                </form>
 
                 <p
                     class="challenge-auth__message"
