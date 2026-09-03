@@ -20,7 +20,7 @@ const challengeConfig = {
             },
             {
                 id: "discussion",
-                label: "Discussion Post"
+                label: "Post a Picture"
             }
         ],
 
@@ -42,7 +42,7 @@ const challengeConfig = {
             },
             {
                 id: "discussion",
-                label: "Discussion Post"
+                label: "Post a Picture"
             }
         ],
 
@@ -64,7 +64,7 @@ const challengeConfig = {
             },
             {
                 id: "discussion",
-                label: "Discussion Post"
+                label: "Post a Picture"
             }
         ],
 
